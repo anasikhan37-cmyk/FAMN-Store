@@ -1,323 +1,378 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAMN Store</title>
-
+<meta name="theme-color" content="#090d1d">
+<title>FAMN Store — Apps, Games & Web Tools</title>
 <style>
+:root{--bg:#090d1d;--panel:#111831;--panel2:#151f3c;--line:#283455;--text:#f4f6ff;--muted:#a8b2ce;--purple:#8b5cf6;--blue:#4f8cff;--cyan:#5eead4;--danger:#fb7185;--good:#34d399}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f5f6fa;color:#172033}
-header{background:#111827;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.logo{font-size:26px;font-weight:bold;color:#a78bfa}
-nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-nav a{color:white;text-decoration:none}
-button{cursor:pointer;border:0;border-radius:8px;padding:12px 17px;font-weight:bold}
-.primary{background:#6d28d9;color:white}
-.secondary{background:white;color:#6d28d9}
-.hero{padding:55px 7%;background:linear-gradient(120deg,#312e81,#7c3aed);color:white}
-.hero h1{font-size:38px;margin-bottom:12px}
-.hero p{margin-bottom:22px}
-.search{width:100%;max-width:520px;padding:15px;border:0;border-radius:10px;font-size:16px}
-main{padding:30px 7%}
-h2{margin:25px 0 18px}
-.categories{display:flex;gap:12px;flex-wrap:wrap}
-.cat{background:white;padding:15px 22px;border-radius:12px;box-shadow:0 2px 8px #ddd;cursor:pointer}
-.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
-.app{background:white;padding:20px;border-radius:15px;box-shadow:0 3px 12px #ddd}
-.app-icon{width:65px;height:65px;border-radius:16px;background:#ede9fe;display:grid;place-items:center;font-size:30px;margin-bottom:15px}
-.app h3{margin-bottom:8px}
-.app p{color:#667085;font-size:14px;line-height:1.5}
-.app button{margin-top:15px}
-footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:40px;line-height:1.8}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,Arial,sans-serif;background:radial-gradient(circle at 80% -10%,#28205d 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+a{color:inherit;text-decoration:none}
+.topbar{position:sticky;top:0;z-index:20;background:#090d1deF;backdrop-filter:blur(16px);border-bottom:1px solid #ffffff12}
+.nav{max-width:1200px;margin:auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.7px;font-size:22px}
+.brand-mark{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,var(--purple),var(--blue));display:grid;place-items:center;box-shadow:0 8px 25px #7148e655}
+.brand-mark span{font-size:18px}
+.brand em{font-style:normal;color:#a78bfa}
+.navlinks{display:flex;align-items:center;gap:20px;color:var(--muted);font-size:14px}
+.navlinks a:hover{color:white}
+.nav-actions{display:flex;gap:9px;align-items:center}
+.btn{padding:11px 16px;border-radius:11px;font-weight:750;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn-primary{background:linear-gradient(120deg,var(--purple),var(--blue));color:white;box-shadow:0 8px 22px #6749d633}
+.btn-ghost{background:#ffffff0b;border:1px solid var(--line);color:white}
+.btn-soft{background:#211b43;color:#c4b5fd;border:1px solid #5b45a3}
+.btn-danger{background:#4a1d32;color:#fecdd3;border:1px solid #8b3455}
+.menu-btn{display:none}
+.wrap{max-width:1200px;margin:auto;padding:0 22px}
+.hero{padding:76px 0 58px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:430px;height:430px;border-radius:50%;right:-110px;top:-180px;background:#6d45ff22;filter:blur(40px);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;align-items:center;position:relative;z-index:1}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 11px;border:1px solid #8b5cf655;background:#8b5cf614;color:#c4b5fd;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.hero h1{font-size:clamp(38px,5vw,62px);line-height:1.05;letter-spacing:-2px;margin:20px 0 17px}
+.gradient-text{background:linear-gradient(90deg,#c4b5fd,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:610px;color:var(--muted);font-size:17px;line-height:1.7}
+.searchbar{display:flex;gap:10px;max-width:610px;margin-top:27px;background:#ffffff0b;border:1px solid var(--line);padding:7px;border-radius:14px}
+.searchbar input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:8px 10px}
+.searchbar input::placeholder{color:#8994b3}
+.hero-art{min-height:300px;border:1px solid #ffffff18;border-radius:28px;background:linear-gradient(145deg,#1a2450,#17112e 65%,#10263b);padding:25px;position:relative;box-shadow:0 25px 80px #0005}
+.art-orbit{position:absolute;inset:25px;border:1px solid #ffffff18;border-radius:23px;transform:rotate(-8deg)}
+.art-main{position:absolute;inset:58px 48px;background:linear-gradient(145deg,#7654e8,#2867c7);border-radius:24px;display:grid;place-items:center;font-size:72px;box-shadow:0 20px 50px #0006}
+.float-card{position:absolute;background:#0b1228eF;border:1px solid #ffffff22;padding:12px 15px;border-radius:14px;box-shadow:0 12px 30px #0005;font-size:13px}
+.float-card strong{display:block;font-size:15px;margin-bottom:3px}
+.float-one{top:24px;right:18px}.float-two{bottom:23px;left:18px}
+.section{padding:32px 0 18px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:20px}
+.section-head h2{font-size:25px;letter-spacing:-.5px}
+.section-head p{color:var(--muted);font-size:13px;margin-top:6px}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.category{padding:19px 14px;background:linear-gradient(145deg,#151e3b,#10172c);border:1px solid var(--line);border-radius:17px;text-align:left;color:white;transition:.2s}
+.category:hover,.category.active{border-color:#9272ff;transform:translateY(-3px);background:linear-gradient(145deg,#292052,#121d39)}
+.category .emoji{font-size:25px;display:block;margin-bottom:12px}
+.category strong{display:block;font-size:14px}.category small{display:block;color:var(--muted);margin-top:5px;font-size:12px}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.app-card{background:linear-gradient(145deg,#151e39,#10172c);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0;transition:.2s}
+.app-card:hover{transform:translateY(-4px);border-color:#6656ad}
+.app-top{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.app-icon{width:58px;height:58px;border-radius:16px;background:linear-gradient(145deg,#342b65,#1c4670);display:grid;place-items:center;font-size:27px}
+.tag{font-size:10px;color:#c4b5fd;background:#8b5cf622;border:1px solid #8b5cf644;padding:5px 8px;border-radius:999px}
+.app-card h3{font-size:16px;margin:16px 0 7px}
+.app-card p{font-size:13px;line-height:1.55;color:var(--muted);min-height:40px}
+.app-meta{display:flex;justify-content:space-between;align-items:center;margin-top:15px;color:#9eabc9;font-size:11px}
+.app-card .btn{width:100%;margin-top:14px}
+.empty{grid-column:1/-1;padding:35px;text-align:center;border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+.callout{margin:45px 0 25px;padding:28px;border-radius:22px;background:linear-gradient(110deg,#32245f,#173b61);border:1px solid #8b5cf655;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.callout h2{font-size:23px;margin-bottom:8px}.callout p{color:#d2d9ef;font-size:14px;line-height:1.6}
+footer{margin-top:50px;border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:#02040bd9;backdrop-filter:blur(7px);z-index:50;display:grid;place-items:center;padding:16px;overflow:auto}
 .hidden{display:none!important}
-.modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10}
-.modal-box{background:white;padding:25px;border-radius:15px;width:100%;max-width:430px;max-height:90vh;overflow:auto}
-.modal-box h2{margin:0 0 15px}
-.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-size:15px}
-.modal-box label{font-weight:bold;font-size:14px}
-.close{float:right;background:#eee;color:#333}
-.choice{width:100%;margin:10px 0}
-.notice{background:#fff7df;padding:13px;border-radius:8px;color:#805b00;margin:15px 0;font-size:14px;line-height:1.5}
-.status{font-size:13px;color:#667085;margin-top:12px;line-height:1.5}
-.dashboard{background:white;padding:15px;border-radius:12px}
-@media(max-width:600px){
-.hero h1{font-size:29px}
-header{padding:18px 5%}
-main{padding:20px 5%}
-}
+.modal-box{width:min(100%,480px);max-height:92vh;overflow:auto;background:#111831;border:1px solid #344064;border-radius:22px;padding:25px;box-shadow:0 25px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-head h2{font-size:22px}
+.close{background:#ffffff10;color:white;border:1px solid var(--line);width:34px;height:34px;border-radius:10px}
+.field{margin:13px 0}.field label{display:block;color:#dce3f7;font-size:12px;font-weight:750;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:13px 14px;border-radius:11px;background:#0a1125;border:1px solid #344064;color:white;outline:0}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:#9272ff}
+.field textarea{min-height:90px;resize:vertical}
+.field small{color:var(--muted);font-size:11px;display:block;margin-top:6px;line-height:1.5}
+.full{width:100%;margin-top:10px}
+.note{padding:12px;border-radius:12px;background:#2b2545;border:1px solid #5d4a9c;color:#ddd4ff;font-size:12px;line-height:1.6;margin:13px 0}
+.error{color:#fda4af;font-size:12px;margin-top:10px;line-height:1.5}.success{color:#6ee7b7;font-size:12px;margin-top:10px;line-height:1.5}
+.switchline{text-align:center;color:var(--muted);font-size:13px;margin-top:15px}.linkbtn{background:none;color:#c4b5fd;font-weight:800}
+.dashboard{width:min(100%,900px);max-height:92vh;overflow:auto;background:#111831;border:1px solid #344064;border-radius:22px;padding:24px}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:17px 0}
+.stat{padding:15px;border-radius:14px;background:#0a1125;border:1px solid var(--line)}
+.stat small{color:var(--muted)}.stat strong{display:block;font-size:22px;margin-top:7px}
+.panel{border:1px solid var(--line);border-radius:15px;padding:17px;margin-top:15px;background:#0d152c}
+.panel h3{font-size:16px;margin-bottom:12px}
+.item-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #ffffff12;font-size:13px}
+.item-row:last-child{border-bottom:0}
+.item-row small{display:block;color:var(--muted);margin-top:4px}
+.pill{font-size:10px;padding:5px 8px;border-radius:999px;background:#26324e;color:#cbd5e1}
+.pill.approved{background:#123d35;color:#6ee7b7}.pill.pending{background:#453717;color:#fde68a}.pill.rejected{background:#4a1d32;color:#fecdd3}
+@media(max-width:850px){.hero-grid{grid-template-columns:1fr}.hero-art{min-height:260px}.apps{grid-template-columns:repeat(2,1fr)}.categories{grid-template-columns:repeat(3,1fr)}.navlinks{display:none}.menu-btn{display:inline-flex}}
+@media(max-width:560px){.nav{padding:12px 15px}.brand{font-size:18px}.brand-mark{width:34px;height:34px}.nav-actions .btn{padding:9px 10px;font-size:12px}.wrap{padding:0 16px}.hero{padding:52px 0 35px}.hero h1{letter-spacing:-1.2px}.hero p{font-size:15px}.hero-art{min-height:225px}.art-main{inset:48px 38px;font-size:55px}.categories{grid-template-columns:repeat(2,1fr)}.apps{grid-template-columns:1fr}.callout{align-items:flex-start;flex-direction:column}.dash-grid{grid-template-columns:1fr 1fr}.dashboard{padding:16px}.modal-box{padding:19px}}
 </style>
 </head>
-
 <body>
-
-<header>
-<div class="logo">FAMN STORE</div>
-<nav>
-<a href="#">Home</a>
-<a href="#categories">Categories</a>
-<a href="#apps">Apps</a>
-<button class="secondary" onclick="openModal('userChoice')">Login</button>
-<button class="primary" onclick="openModal('devChoice')">Become a Developer</button>
-</nav>
+<header class="topbar">
+  <div class="nav">
+    <a class="brand" href="#"><span class="brand-mark"><span>F</span></span><span>FAMN <em>STORE</em></span></a>
+    <nav class="navlinks"><a href="#">Home</a><a href="#categories">Categories</a><a href="#apps">Explore Apps</a><a href="#developers">Developers</a></nav>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" id="loginNav" onclick="openModal('authChoice')">Login</button>
+      <button class="btn btn-primary" id="developerNav" onclick="openModal('developerInfo')">Become a Developer</button>
+      <button class="btn btn-ghost hidden" id="accountNav" onclick="openDashboard()">My Account</button>
+      <button class="btn btn-ghost hidden" id="logoutNav" onclick="logout()">Logout</button>
+    </div>
+  </div>
 </header>
 
 <section class="hero">
-<h1>Discover Your Next App</h1>
-<p>Explore Android Apps, Games and Web Apps in one place.</p>
-<input class="search" id="search" placeholder="Search apps..." oninput="searchApps()">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">✦ YOUR DIGITAL DISCOVERY HUB</span>
+      <h1>Discover apps.<br><span class="gradient-text">Play more. Create more.</span></h1>
+      <p>Explore Android apps, games and useful web tools — all in one growing community. Find something new or publish your own creation.</p>
+      <div class="searchbar"><input id="search" placeholder="Search apps, games and tools..." oninput="renderApps()"><button class="btn btn-primary" onclick="document.getElementById('apps').scrollIntoView()">Search</button></div>
+    </div>
+    <div class="hero-art"><div class="art-orbit"></div><div class="art-main">🚀</div><div class="float-card float-one"><strong>One store</strong><span>Many possibilities</span></div><div class="float-card float-two"><strong>FAMN Community</strong><span>Discover • Build • Share</span></div></div>
+  </div>
 </section>
 
-<main>
+<main class="wrap">
+  <section class="section" id="categories">
+    <div class="section-head"><div><h2>Explore Categories</h2><p>Choose what you want to discover</p></div></div>
+    <div class="categories">
+      <button class="category active" data-filter="All" onclick="setFilter('All')"><span class="emoji">✨</span><strong>All Apps</strong><small>Explore everything</small></button>
+      <button class="category" data-filter="Android Apps" onclick="setFilter('Android Apps')"><span class="emoji">📱</span><strong>Android Apps</strong><small>Mobile applications</small></button>
+      <button class="category" data-filter="Games" onclick="setFilter('Games')"><span class="emoji">🎮</span><strong>Games</strong><small>Games and fun</small></button>
+      <button class="category" data-filter="Web Apps" onclick="setFilter('Web Apps')"><span class="emoji">🌐</span><strong>Web Apps</strong><small>Tools on the web</small></button>
+      <button class="category" data-filter="AI Apps" onclick="setFilter('AI Apps')"><span class="emoji">🤖</span><strong>AI Apps</strong><small>AI-powered tools</small></button>
+    </div>
+  </section>
 
-<h2 id="categories">Explore Categories</h2>
-<div class="categories">
-<div class="cat" onclick="filterApps('Android Apps')">📱 Android Apps</div>
-<div class="cat" onclick="filterApps('Games')">🎮 Games</div>
-<div class="cat" onclick="filterApps('Web Apps')">🌐 Web Apps</div>
-<div class="cat" onclick="filterApps('AI Apps')">🤖 AI Apps</div>
-<div class="cat" onclick="filterApps('Education')">📚 Education</div>
-<div class="cat" onclick="filterApps('')">All Apps</div>
-</div>
+  <section class="section" id="apps">
+    <div class="section-head"><div><h2>Explore FAMN Store</h2><p>New discoveries from the community</p></div><span class="pill" id="appCount">0 apps</span></div>
+    <div class="apps" id="appGrid"><div class="empty">Loading apps...</div></div>
+  </section>
 
-<h2 id="apps">Popular Apps</h2>
-<div class="apps">
-
-<div class="app" data-category="AI Apps">
-<div class="app-icon">🤖</div>
-<h3>AI Tools</h3>
-<p>Discover useful artificial intelligence tools.</p>
-<button class="primary" onclick="viewApp('AI Tools')">View App</button>
-</div>
-
-<div class="app" data-category="Games">
-<div class="app-icon">🎮</div>
-<h3>Games Hub</h3>
-<p>Explore exciting games in one place.</p>
-<button class="primary" onclick="viewApp('Games Hub')">View App</button>
-</div>
-
-<div class="app" data-category="Education">
-<div class="app-icon">📚</div>
-<h3>Study Helper</h3>
-<p>Useful tools for learning and education.</p>
-<button class="primary" onclick="viewApp('Study Helper')">View App</button>
-</div>
-
-<div class="app" data-category="Web Apps">
-<div class="app-icon">🌐</div>
-<h3>Web Tools</h3>
-<p>Explore helpful browser-based applications.</p>
-<button class="primary" onclick="viewApp('Web Tools')">View App</button>
-</div>
-
-</div>
+  <section class="callout" id="developers">
+    <div><h2>Have an app or game to share?</h2><p>Join FAMN Store as a developer. Complete the one-time ₹9 verification request and, after admin approval, submit your apps and games for review.</p></div>
+    <button class="btn btn-primary" onclick="openModal('developerInfo')">Start Developer Registration →</button>
+  </section>
 </main>
 
-<!-- USER CHOICE -->
-<div class="modal hidden" id="userChoice">
-<div class="modal-box">
-<button class="close" onclick="closeModal('userChoice')">✕</button>
-<h2>Welcome to FAMN Store</h2>
-<button class="primary choice" onclick="switchModal('userChoice','userLogin')">Login</button>
-<button class="secondary choice" onclick="switchModal('userChoice','userRegister')">Create Account</button>
-</div>
-</div>
+<footer><div class="wrap footer-inner"><span>© 2026 FAMN Store. All rights reserved.</span><span>Your Apps. Your World.</span></div></footer>
 
-<!-- USER LOGIN -->
-<div class="modal hidden" id="userLogin">
-<div class="modal-box">
-<button class="close" onclick="closeModal('userLogin')">✕</button>
-<h2>User Login</h2>
-<form onsubmit="showPending(event)">
-<label>Email or Mobile Number</label>
-<input required placeholder="Enter email or mobile number">
-<label>6 Digit PIN</label>
-<input required type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6 digit PIN">
-<button class="primary choice">Login</button>
-</form>
-<p class="status">Login service will be activated after secure Firebase setup.</p>
-</div>
-</div>
+<!-- Authentication choice -->
+<div class="modal hidden" id="authChoice"><div class="modal-box">
+  <div class="modal-head"><h2>Welcome to FAMN Store</h2><button class="close" onclick="closeModal('authChoice')">✕</button></div>
+  <p style="color:var(--muted);font-size:13px;line-height:1.6">Sign in to manage your account or create a new account.</p>
+  <button class="btn btn-primary full" onclick="switchModal('authChoice','loginModal')">Login</button>
+  <button class="btn btn-ghost full" onclick="switchModal('authChoice','registerModal')">Create Account</button>
+</div></div>
 
-<!-- USER REGISTER -->
-<div class="modal hidden" id="userRegister">
-<div class="modal-box">
-<button class="close" onclick="closeModal('userRegister')">✕</button>
-<h2>Create User Account</h2>
-<form onsubmit="showPending(event)">
-<label>Full Name</label>
-<input required placeholder="Your full name">
-<label>Email</label>
-<input type="email" required placeholder="Your email">
-<label>Mobile Number</label>
-<input type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="10 digit mobile number">
-<label>Create 6 Digit PIN</label>
-<input type="password" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Create PIN">
-<label>Confirm PIN</label>
-<input type="password" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Confirm PIN">
-<button class="primary choice">Create Account</button>
-</form>
-</div>
-</div>
+<div class="modal hidden" id="registerModal"><div class="modal-box">
+  <div class="modal-head"><h2>Create your account</h2><button class="close" onclick="closeModal('registerModal')">✕</button></div>
+  <form id="registerForm">
+    <div class="field"><label>Full name</label><input id="regName" required maxlength="70" placeholder="Enter your name"></div>
+    <div class="field"><label>Mobile number</label><input id="regMobile" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number"></div>
+    <div class="field"><label>Create 6-digit PIN</label><input id="regPin" required type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Create PIN"></div>
+    <div class="field"><label>Confirm PIN</label><input id="regPin2" required type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Confirm PIN"></div>
+    <div class="note">No OTP is used in this version. The mobile number is used as the account login ID. A 6-digit PIN is less secure than a longer password, so do not reuse a PIN used for banking or payments.</div>
+    <button class="btn btn-primary full" type="submit">Create Account</button><div id="regMsg"></div>
+  </form>
+  <div class="switchline">Already registered? <button class="linkbtn" onclick="switchModal('registerModal','loginModal')">Login</button></div>
+</div></div>
 
-<!-- DEVELOPER CHOICE -->
-<div class="modal hidden" id="devChoice">
-<div class="modal-box">
-<button class="close" onclick="closeModal('devChoice')">✕</button>
-<h2>Become a Developer</h2>
-<button class="primary choice" onclick="switchModal('devChoice','devLogin')">Developer Login</button>
-<button class="secondary choice" onclick="switchModal('devChoice','devRegister')">Developer Register</button>
-</div>
-</div>
+<div class="modal hidden" id="loginModal"><div class="modal-box">
+  <div class="modal-head"><h2>Login to FAMN Store</h2><button class="close" onclick="closeModal('loginModal')">✕</button></div>
+  <form id="loginForm">
+    <div class="field"><label>Mobile number</label><input id="loginMobile" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="Registered mobile number"></div>
+    <div class="field"><label>6-digit PIN</label><input id="loginPin" required type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Your PIN"></div>
+    <button class="btn btn-primary full" type="submit">Login</button><div id="loginMsg"></div>
+  </form>
+  <div class="switchline">New to FAMN Store? <button class="linkbtn" onclick="switchModal('loginModal','registerModal')">Create account</button></div>
+</div></div>
 
-<!-- DEVELOPER LOGIN -->
-<div class="modal hidden" id="devLogin">
-<div class="modal-box">
-<button class="close" onclick="closeModal('devLogin')">✕</button>
-<h2>Developer Login</h2>
+<div class="modal hidden" id="developerInfo"><div class="modal-box">
+  <div class="modal-head"><h2>Become a Developer</h2><button class="close" onclick="closeModal('developerInfo')">✕</button></div>
+  <div class="note">Developer verification has a one-time fee of ₹9. Submit your PhonePe transaction ID for manual admin verification. Uploading apps after approval is free. Do not share your UPI PIN, OTP, card details or banking password.</div>
+  <button class="btn btn-primary full" onclick="startDeveloper()">Continue with my account</button>
+  <button class="btn btn-ghost full" onclick="openModal('authChoice')">Login / Create account</button>
+</div></div>
 
-<form onsubmit="showPending(event)">
-<label>Email or Mobile Number</label>
-<input id="devLoginIdentity" required placeholder="Enter email or mobile number">
+<div class="modal hidden" id="developerApply"><div class="modal-box">
+  <div class="modal-head"><h2>Developer verification</h2><button class="close" onclick="closeModal('developerApply')">✕</button></div>
+  <p style="font-size:13px;color:var(--muted);line-height:1.6">Submit your one-time ₹9 payment reference. Admin will review it before enabling uploads.</p>
+  <div class="note"><strong>PhonePe UPI ID:</strong> ADD_YOUR_UPI_ID_HERE<br>Pay ₹9 using your payment app, then enter the transaction/reference ID below. This page does not verify payments automatically.</div>
+  <form id="developerForm">
+    <div class="field"><label>Developer display name</label><input id="devDisplayName" required maxlength="70"></div>
+    <div class="field"><label>PhonePe transaction / UTR reference</label><input id="devTxn" required maxlength="80" placeholder="Enter transaction reference"></div>
+    <div class="field"><label>Optional note</label><textarea id="devNote" maxlength="300" placeholder="Any extra information"></textarea></div>
+    <button class="btn btn-primary full" type="submit">Submit for Admin Approval</button><div id="devMsg"></div>
+  </form>
+</div></div>
 
-<label>6 Digit PIN</label>
-<input id="devLoginPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Enter 6 digit PIN">
+<div class="modal hidden" id="dashboardModal"><div class="dashboard">
+  <div class="modal-head"><div><span class="eyebrow">FAMN ACCOUNT</span><h2 style="margin-top:9px" id="dashTitle">My Dashboard</h2></div><button class="close" onclick="closeModal('dashboardModal')">✕</button></div>
+  <div class="dash-grid">
+    <div class="stat"><small>Account</small><strong id="dashName">—</strong></div>
+    <div class="stat"><small>Developer status</small><strong id="dashStatus" style="font-size:15px">Not applied</strong></div>
+    <div class="stat"><small>Published apps</small><strong id="dashApps">0</strong></div>
+  </div>
+  <div id="userDashboard">
+    <div class="panel"><h3>Developer programme</h3><p style="font-size:13px;color:var(--muted);line-height:1.6">Apply for developer verification. After approval, the upload form becomes available here.</p><button class="btn btn-primary" style="margin-top:12px" onclick="openModal('developerApply')">Apply to Become a Developer</button></div>
+    <div class="panel"><h3>My submissions</h3><div id="myApps">No submissions yet.</div></div>
+  </div>
+  <div id="adminDashboard" class="hidden">
+    <div class="panel"><h3>Pending developer applications</h3><div id="pendingDevelopers">Loading...</div></div>
+    <div class="panel"><h3>App submissions awaiting review</h3><div id="pendingApps">Loading...</div></div>
+  </div>
+  <div id="uploadPanel" class="panel hidden">
+    <h3>Upload a new app / game</h3>
+    <form id="uploadForm">
+      <div class="field"><label>App / Game / Website name</label><input id="appName" required maxlength="80"></div>
+      <div class="field"><label>Category</label><select id="appCategory" required><option value="">Choose category</option><option>Android Apps</option><option>Games</option><option>Web Apps</option><option>AI Apps</option><option>Education</option></select></div>
+      <div class="field"><label>Description</label><textarea id="appDescription" required maxlength="700"></textarea></div>
+      <div class="field"><label>App icon (image)</label><input id="appIcon" type="file" accept="image/*" required></div>
+      <div class="field"><label>App file (APK / ZIP / AAB)</label><input id="appFile" type="file" accept=".apk,.zip,.aab" required><small>Large files may exceed your Firebase Storage quota. Start with small test files.</small></div>
+      <button class="btn btn-primary full" type="submit">Submit App for Review</button><div id="uploadMsg"></div>
+    </form>
+  </div>
+</div></div>
 
-<button class="primary choice">Login to Dashboard</button>
-</form>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
-<p class="status">Use your registered email OR mobile number with your 6 digit PIN.</p>
-</div>
-</div>
+/* STEP 1: Replace the values below with your Firebase Web App config. */
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+  appId: "PASTE_YOUR_FIREBASE_APP_ID"
+};
+/* STEP 2: After creating your owner account, paste its Firebase Auth UID here. */
+const ADMIN_UID = "PASTE_OWNER_ADMIN_UID_HERE";
+/* STEP 3: Put your public PhonePe UPI ID here (not a password or PIN). */
+const PAYMENT_UPI_ID = "ADD_YOUR_UPI_ID_HERE";
 
-<!-- DEVELOPER REGISTER -->
-<div class="modal hidden" id="devRegister">
-<div class="modal-box">
-<button class="close" onclick="closeModal('devRegister')">✕</button>
-<h2>Developer Registration</h2>
-
-<form onsubmit="showPending(event)">
-<label>Developer Name</label>
-<input id="devName" required placeholder="Enter your name">
-
-<label>Email Address</label>
-<input id="devEmail" type="email" required placeholder="Enter your email">
-
-<label>Mobile Number</label>
-<input id="devPhone" type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter 10 digit mobile number">
-
-<label>Create 6 Digit PIN</label>
-<input id="devPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Create your PIN">
-
-<label>Confirm 6 Digit PIN</label>
-<input id="devConfirmPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Confirm your PIN">
-
-<button class="primary choice">Register as Developer</button>
-</form>
-
-<p class="status">Your email and mobile number will be connected to the same developer account.</p>
-</div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="modal hidden" id="dashboard">
-<div class="modal-box">
-<button class="close" onclick="closeModal('dashboard')">✕</button>
-<div class="dashboard">
-<h2>Developer Dashboard</h2>
-<p>Welcome to FAMN Store Developer Area.</p>
-<div class="notice">
-Your dashboard will show your uploaded apps, approval status and developer account details after Firebase setup.
-</div>
-<h3>Upload Your App</h3>
-<form onsubmit="showPending(event)">
-<label>App / Game Name</label>
-<input required placeholder="Enter app name">
-
-<label>Category</label>
-<select required>
-<option value="">Select Category</option>
-<option>Android Apps</option>
-<option>Games</option>
-<option>Web Apps</option>
-<option>AI Apps</option>
-<option>Education</option>
-</select>
-
-<label>Description</label>
-<textarea required placeholder="Describe your app"></textarea>
-
-<label>App Icon</label>
-<input type="file" accept="image/*" required>
-
-<label>App File</label>
-<input type="file" accept=".apk,.zip,.aab" required>
-
-<button class="primary choice">Submit App</button>
-</form>
-</div>
-</div>
-</div>
-
-<footer>
-<p>© 2026 FAMN Store. All rights reserved.</p>
-<p>Your Apps. Your World.</p>
-</footer>
-
-<script>
-function openModal(id){
-document.getElementById(id).classList.remove("hidden");
+const configReady = !Object.values(firebaseConfig).some(v => String(v).startsWith("PASTE_"));
+let auth=null, db=null, storage=null, currentUser=null, currentProfile=null, activeFilter="All";
+if(configReady){
+  const app=initializeApp(firebaseConfig); auth=getAuth(app); db=getFirestore(app); storage=getStorage(app);
+  onAuthStateChanged(auth, async user=>{
+    currentUser=user; currentProfile=null;
+    if(user){try{const s=await getDoc(doc(db,"users",user.uid));if(s.exists())currentProfile=s.data();}catch(e){console.error(e);}}
+    updateNav(); if(user && document.getElementById("dashboardModal").classList.contains("hidden")===false) openDashboard();
+  });
+}else{
+  document.addEventListener("DOMContentLoaded",()=>{document.getElementById("appGrid").innerHTML='<div class="empty">Firebase setup pending — add your Firebase config in index.html to activate accounts and uploads.</div>';});
 }
-
-function closeModal(id){
-document.getElementById(id).classList.add("hidden");
+window.openModal=id=>document.getElementById(id).classList.remove("hidden");
+window.closeModal=id=>document.getElementById(id).classList.add("hidden");
+window.switchModal=(a,b)=>{closeModal(a);openModal(b)};
+window.setFilter=(f)=>{activeFilter=f;document.querySelectorAll(".category").forEach(x=>x.classList.toggle("active",x.dataset.filter===f));renderApps();};
+window.renderApps=async()=>{
+  const grid=document.getElementById("appGrid"); if(!db){grid.innerHTML='<div class="empty">Connect Firebase to load published apps.</div>';return;}
+  try{
+    const snap=await getDocs(query(collection(db,"apps"),where("status","==","approved"),limit(60)));
+    const q=document.getElementById("search").value.toLowerCase();
+    let items=snap.docs.map(d=>({id:d.id,...d.data()})).filter(a=>(activeFilter==="All"||a.category===activeFilter)&&(`${a.name||""} ${a.description||""} ${a.category||""}`).toLowerCase().includes(q));
+    document.getElementById("appCount").textContent=`${items.length} apps`;
+    if(!items.length){grid.innerHTML='<div class="empty">No apps found in this category yet. Check back soon!</div>';return;}
+    grid.innerHTML=items.map(a=>`<article class="app-card"><div class="app-top"><div class="app-icon">${a.iconUrl?`<img src="${escapeHtml(a.iconUrl)}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">`:"📦"}</div><span class="tag">${escapeHtml(a.category||"App")}</span></div><h3>${escapeHtml(a.name||"Untitled")}</h3><p>${escapeHtml(a.description||"Community app")}</p><div class="app-meta"><span>FAMN Store</span><span>Verified listing</span></div><a class="btn btn-primary" href="${escapeHtml(a.downloadUrl||"#")}" target="_blank" rel="noopener">View / Download</a></article>`).join("");
+  }catch(e){grid.innerHTML='<div class="empty">Could not load apps. Check Firestore rules and internet connection.</div>';console.error(e);}
+};
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function mobileEmail(m){return `${m}@mobile.famnstore.invalid`;}
+function updateNav(){
+  document.getElementById("loginNav").classList.toggle("hidden",!!currentUser);
+  document.getElementById("developerNav").classList.toggle("hidden",!!currentUser);
+  document.getElementById("accountNav").classList.toggle("hidden",!currentUser);
+  document.getElementById("logoutNav").classList.toggle("hidden",!currentUser);
 }
-
-function switchModal(oldId,newId){
-closeModal(oldId);
-openModal(newId);
-}
-
-function showPending(event){
-event.preventDefault();
-
-const form=event.target;
-
-if(form.id==="devRegister" || form.querySelector("#devPin")){
-const pin=document.getElementById("devPin");
-const confirm=document.getElementById("devConfirmPin");
-
-if(pin && pin.value!==confirm.value){
-alert("PIN and Confirm PIN do not match.");
-return;
-}
-}
-
-alert("The form is ready. Secure Firebase account service is not connected yet. No account has been created.");
-}
-
-function searchApps(){
-const q=document.getElementById("search").value.toLowerCase();
-
-document.querySelectorAll(".app").forEach(app=>{
-app.style.display=app.innerText.toLowerCase().includes(q)?"block":"none";
+function showMsg(id,msg,ok=false){const el=document.getElementById(id);el.className=ok?"success":"error";el.textContent=msg;}
+document.getElementById("registerForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(!auth){showMsg("regMsg","Firebase config is not added yet.");return;}
+  const name=document.getElementById("regName").value.trim(),mobile=document.getElementById("regMobile").value.trim(),pin=document.getElementById("regPin").value,pin2=document.getElementById("regPin2").value;
+  if(pin!==pin2){showMsg("regMsg","PIN and Confirm PIN do not match.");return;}
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,mobileEmail(mobile),pin);
+    await setDoc(doc(db,"users",cred.user.uid),{name,mobile,role:"user",developerStatus:"not_applied",createdAt:serverTimestamp()});
+    showMsg("regMsg","Account created successfully.",true);closeModal("registerModal");
+  }catch(err){showMsg("regMsg",friendlyError(err));}
 });
-}
-
-function filterApps(category){
-document.getElementById("search").value="";
-
-document.querySelectorAll(".app").forEach(app=>{
-app.style.display=(!category || app.dataset.category===category)?"block":"none";
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(!auth){showMsg("loginMsg","Firebase config is not added yet.");return;}
+  const mobile=document.getElementById("loginMobile").value.trim(),pin=document.getElementById("loginPin").value;
+  try{await signInWithEmailAndPassword(auth,mobileEmail(mobile),pin);closeModal("loginModal");}
+  catch(err){showMsg("loginMsg",friendlyError(err));}
 });
+function friendlyError(e){const c=e?.code||"";if(c.includes("email-already-in-use"))return"This mobile number is already registered.";if(c.includes("invalid-credential")||c.includes("user-not-found")||c.includes("wrong-password"))return"Mobile number or PIN is incorrect.";if(c.includes("weak-password"))return"PIN must be at least 6 digits.";if(c.includes("network"))return"Network issue. Please try again.";return e?.message||"Something went wrong.";}
+window.startDeveloper=()=>{
+  closeModal("developerInfo");
+  if(!currentUser){openModal("authChoice");return;}
+  if(currentProfile?.developerStatus==="approved"){openDashboard();return;}
+  if(PAYMENT_UPI_ID!=="ADD_YOUR_UPI_ID_HERE")document.querySelector("#developerApply .note").innerHTML=`<strong>PhonePe UPI ID:</strong> ${escapeHtml(PAYMENT_UPI_ID)}<br>Pay ₹9 using your payment app, then enter the transaction/reference ID below. This page does not verify payments automatically.`;
+  openModal("developerApply");
+};
+document.getElementById("developerForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(!currentUser||!db){showMsg("devMsg","Please login first.");return;}
+  try{
+    const name=document.getElementById("devDisplayName").value.trim(),txn=document.getElementById("devTxn").value.trim(),note=document.getElementById("devNote").value.trim();
+    await addDoc(collection(db,"developerApplications"),{uid:currentUser.uid,name,mobile:currentProfile?.mobile||"",transactionRef:txn,note,feeAmount:9,status:"pending",createdAt:serverTimestamp()});
+    await updateDoc(doc(db,"users",currentUser.uid),{developerStatus:"pending"});
+    currentProfile={...currentProfile,developerStatus:"pending"};showMsg("devMsg","Application submitted. Admin will verify the payment reference.",true);
+  }catch(err){showMsg("devMsg",friendlyError(err));}
+});
+window.openDashboard=async()=>{
+  if(!currentUser){openModal("authChoice");return;}
+  try{const s=await getDoc(doc(db,"users",currentUser.uid));currentProfile=s.exists()?s.data():null;}catch(e){}
+  document.getElementById("dashTitle").textContent=currentUser.uid===ADMIN_UID?"Admin Dashboard":"My Dashboard";
+  document.getElementById("dashName").textContent=currentProfile?.name||"FAMN User";
+  document.getElementById("dashStatus").textContent=currentProfile?.developerStatus||"Not applied";
+  document.getElementById("userDashboard").classList.toggle("hidden",currentUser.uid===ADMIN_UID);
+  document.getElementById("adminDashboard").classList.toggle("hidden",currentUser.uid!==ADMIN_UID);
+  document.getElementById("uploadPanel").classList.toggle("hidden",currentProfile?.developerStatus!=="approved"||currentUser.uid===ADMIN_UID);
+  if(currentUser.uid===ADMIN_UID)await loadAdmin();
+  else await loadMyApps();
+  openModal("dashboardModal");
+};
+async function loadMyApps(){
+  const box=document.getElementById("myApps");if(!db)return;
+  try{const s=await getDocs(query(collection(db,"apps"),where("ownerUid","==",currentUser.uid),limit(30)));document.getElementById("dashApps").textContent=s.size;
+    box.innerHTML=s.empty?"No submissions yet.":s.docs.map(d=>{const a=d.data();return `<div class="item-row"><div><strong>${escapeHtml(a.name)}</strong><small>${escapeHtml(a.category)} · ${escapeHtml(a.status)}</small></div><span class="pill ${a.status}">${escapeHtml(a.status)}</span></div>`}).join("");
+  }catch(e){box.textContent="Could not load submissions.";}
 }
-
-function viewApp(name){
-alert(name+" details coming soon!");
+async function loadAdmin(){
+  const devBox=document.getElementById("pendingDevelopers"),appBox=document.getElementById("pendingApps");
+  try{
+    const ds=await getDocs(query(collection(db,"developerApplications"),where("status","==","pending"),limit(50)));
+    devBox.innerHTML=ds.empty?"No pending developer requests.":ds.docs.map(d=>{const a=d.data();return `<div class="item-row"><div><strong>${escapeHtml(a.name)}</strong><small>${escapeHtml(a.mobile)} · ₹${a.feeAmount} · Ref: ${escapeHtml(a.transactionRef)}</small></div><div style="display:flex;gap:6px"><button class="btn btn-primary" onclick="reviewDeveloper('${d.id}','${a.uid}',true)">Approve</button><button class="btn btn-danger" onclick="reviewDeveloper('${d.id}','${a.uid}',false)">Reject</button></div></div>`}).join("");
+    const as=await getDocs(query(collection(db,"apps"),where("status","==","pending"),limit(50)));
+    appBox.innerHTML=as.empty?"No pending app submissions.":as.docs.map(d=>{const a=d.data();return `<div class="item-row"><div><strong>${escapeHtml(a.name)}</strong><small>${escapeHtml(a.category)} · Owner: ${escapeHtml(a.ownerUid)}</small><a href="${escapeHtml(a.downloadUrl||"#")}" target="_blank" rel="noopener" style="color:#c4b5fd">Open file</a></div><div style="display:flex;gap:6px"><button class="btn btn-primary" onclick="reviewApp('${d.id}',true)">Approve</button><button class="btn btn-danger" onclick="reviewApp('${d.id}',false)">Reject</button></div></div>`}).join("");
+  }catch(e){devBox.textContent="Admin access blocked. Check ADMIN_UID and Firestore rules.";appBox.textContent="Could not load app submissions.";}
 }
+window.reviewDeveloper=async(id,uid,approved)=>{
+  if(!currentUser||currentUser.uid!==ADMIN_UID)return alert("Admin only.");
+  try{await updateDoc(doc(db,"developerApplications",id),{status:approved?"approved":"rejected",reviewedAt:serverTimestamp()});await updateDoc(doc(db,"users",uid),{developerStatus:approved?"approved":"rejected"});await loadAdmin();}
+  catch(e){alert("Could not update request: "+friendlyError(e));}
+};
+window.reviewApp=async(id,approved)=>{
+  if(!currentUser||currentUser.uid!==ADMIN_UID)return alert("Admin only.");
+  try{await updateDoc(doc(db,"apps",id),{status:approved?"approved":"rejected",reviewedAt:serverTimestamp()});await loadAdmin();await renderApps();}
+  catch(e){alert("Could not update app: "+friendlyError(e));}
+};
+document.getElementById("uploadForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(!currentUser||currentProfile?.developerStatus!=="approved"){showMsg("uploadMsg","Only approved developers can upload.");return;}
+  const icon=document.getElementById("appIcon").files[0],file=document.getElementById("appFile").files[0];
+  if(!icon||!file){showMsg("uploadMsg","Please select an icon and app file.");return;}
+  if(icon.size>3*1024*1024||file.size>100*1024*1024){showMsg("uploadMsg","Icon max 3 MB and app file max 100 MB in this starter.");return;}
+  try{
+    showMsg("uploadMsg","Uploading files…",true);
+    const base=`apps/${currentUser.uid}/${Date.now()}`;
+    const iconRef=ref(storage,`${base}/icon-${icon.name}`),fileRef=ref(storage,`${base}/${file.name}`);
+    await uploadBytes(iconRef,icon);const iconUrl=await getDownloadURL(iconRef);
+    await uploadBytes(fileRef,file);const downloadUrl=await getDownloadURL(fileRef);
+    await addDoc(collection(db,"apps"),{ownerUid:currentUser.uid,name:document.getElementById("appName").value.trim(),category:document.getElementById("appCategory").value,description:document.getElementById("appDescription").value.trim(),iconUrl,downloadUrl,fileName:file.name,status:"pending",createdAt:serverTimestamp()});
+    showMsg("uploadMsg","Uploaded and sent for admin review.",true);e.target.reset();await loadMyApps();
+  }catch(err){showMsg("uploadMsg",friendlyError(err));}
+});
+window.logout=async()=>{if(auth)await signOut(auth);closeModal("dashboardModal");};
+renderApps();
 </script>
-
 </body>
 </html>
