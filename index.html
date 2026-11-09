@@ -5,12 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAMN Store</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f5f6fa;color:#172033}
-header{background:#111827;color:white;padding:22px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.logo{font-size:27px;font-weight:bold;color:#a78bfa}
-nav a{color:white;text-decoration:none;margin-left:18px}
+header{background:#111827;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:26px;font-weight:bold;color:#a78bfa}
+nav{display:flex;gap:15px;align-items:center;flex-wrap:wrap}
+nav a{color:white;text-decoration:none}
+button{cursor:pointer;border:0;border-radius:8px;padding:11px 17px;font-weight:bold}
+.primary{background:#6d28d9;color:white}
+.secondary{background:white;color:#6d28d9}
 .hero{padding:55px 7%;background:linear-gradient(120deg,#312e81,#7c3aed);color:white}
 .hero h1{font-size:38px;margin-bottom:12px}
 .hero p{margin-bottom:22px}
@@ -18,23 +23,48 @@ nav a{color:white;text-decoration:none;margin-left:18px}
 main{padding:30px 7%}
 h2{margin:25px 0 18px}
 .categories{display:flex;gap:12px;flex-wrap:wrap}
-.cat{background:white;padding:15px 22px;border-radius:12px;box-shadow:0 2px 8px #ddd}
+.cat{background:white;padding:15px 22px;border-radius:12px;box-shadow:0 2px 8px #ddd;cursor:pointer}
+.cat:hover{background:#ede9fe}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
 .app{background:white;padding:20px;border-radius:15px;box-shadow:0 3px 12px #ddd}
 .app-icon{width:65px;height:65px;border-radius:16px;background:#ede9fe;display:grid;place-items:center;font-size:30px;margin-bottom:15px}
 .app h3{margin-bottom:8px}
 .app p{color:#667085;font-size:14px;line-height:1.5}
-.app button{margin-top:15px;padding:10px 18px;border:0;border-radius:8px;background:#6d28d9;color:white;cursor:pointer}
-footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:40px}
+.app button{margin-top:15px}
+footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:40px;line-height:1.8}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10}
+.modal-box{background:white;padding:25px;border-radius:15px;width:100%;max-width:430px;max-height:90vh;overflow:auto}
+.modal-box h2{margin:0 0 20px}
+.modal-box input,.modal-box select,.modal-box textarea{
+width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-size:15px
+}
+.modal-box label{font-weight:bold;font-size:14px}
+.close{float:right;background:#eee;color:#333}
+.form-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.dashboard{background:white;padding:25px;border-radius:15px;box-shadow:0 3px 12px #ddd}
+.dashboard h2{margin-top:0}
+.notice{background:#fff7df;padding:13px;border-radius:8px;color:#805b00;margin:15px 0;font-size:14px;line-height:1.5}
+.status{color:#667085;font-size:13px;margin-top:8px}
+@media(max-width:600px){
+.hero h1{font-size:29px}
+header{padding:18px 5%}
+main{padding:20px 5%}
+nav{gap:10px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
 <div class="logo">FAMN STORE</div>
 <nav>
 <a href="#">Home</a>
 <a href="#categories">Categories</a>
 <a href="#apps">Apps</a>
+<button class="secondary" onclick="openModal('loginModal')">Login</button>
+<button class="primary" onclick="openModal('developerModal')">Become a Developer</button>
 </nav>
 </header>
 
@@ -44,44 +74,138 @@ footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:
 <input class="search" id="search" placeholder="Search apps..." oninput="searchApps()">
 </section>
 
-<main>
+<main id="homePage">
+
 <h2 id="categories">Explore Categories</h2>
 <div class="categories">
-<div class="cat">📱 Android Apps</div>
-<div class="cat">🎮 Games</div>
-<div class="cat">🌐 Web Apps</div>
-<div class="cat">🤖 AI Apps</div>
-<div class="cat">📚 Education</div>
+<div class="cat" onclick="filterApps('Android Apps')">📱 Android Apps</div>
+<div class="cat" onclick="filterApps('Games')">🎮 Games</div>
+<div class="cat" onclick="filterApps('Web Apps')">🌐 Web Apps</div>
+<div class="cat" onclick="filterApps('AI Apps')">🤖 AI Apps</div>
+<div class="cat" onclick="filterApps('Education')">📚 Education</div>
+<div class="cat" onclick="filterApps('')">All Apps</div>
 </div>
 
 <h2 id="apps">Popular Apps</h2>
+
 <div class="apps" id="appList">
-<div class="app">
+
+<div class="app" data-category="AI Apps">
 <div class="app-icon">🤖</div>
 <h3>AI Tools</h3>
 <p>Discover useful artificial intelligence tools.</p>
-<button onclick="alert('App details coming soon!')">View App</button>
+<button class="primary" onclick="viewApp('AI Tools')">View App</button>
 </div>
-<div class="app">
+
+<div class="app" data-category="Games">
 <div class="app-icon">🎮</div>
 <h3>Games Hub</h3>
 <p>Explore exciting games in one place.</p>
-<button onclick="alert('App details coming soon!')">View App</button>
+<button class="primary" onclick="viewApp('Games Hub')">View App</button>
 </div>
-<div class="app">
+
+<div class="app" data-category="Education">
 <div class="app-icon">📚</div>
 <h3>Study Helper</h3>
 <p>Useful tools for learning and education.</p>
-<button onclick="alert('App details coming soon!')">View App</button>
+<button class="primary" onclick="viewApp('Study Helper')">View App</button>
 </div>
-<div class="app">
+
+<div class="app" data-category="Web Apps">
 <div class="app-icon">🌐</div>
 <h3>Web Tools</h3>
 <p>Explore helpful browser-based applications.</p>
-<button onclick="alert('App details coming soon!')">View App</button>
+<button class="primary" onclick="viewApp('Web Tools')">View App</button>
 </div>
+
 </div>
 </main>
+
+<!-- LOGIN -->
+<div class="modal hidden" id="loginModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('loginModal')">✕</button>
+<h2>Login to FAMN Store</h2>
+
+<form onsubmit="demoLogin(event)">
+<label>Mobile Number</label>
+<input type="tel" id="loginPhone" placeholder="Enter mobile number" required pattern="[0-9]{10}" maxlength="10">
+
+<button class="primary" type="submit">Continue</button>
+</form>
+<p class="status">Firebase OTP authentication will be connected in the next step.</p>
+</div>
+</div>
+
+<!-- DEVELOPER REGISTRATION -->
+<div class="modal hidden" id="developerModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('developerModal')">✕</button>
+<h2>Developer Registration</h2>
+
+<form onsubmit="demoRegister(event)">
+<label>Developer Name</label>
+<input id="devName" placeholder="Your name" required>
+
+<label>Mobile Number</label>
+<input id="devPhone" type="tel" placeholder="10 digit mobile number" required pattern="[0-9]{10}" maxlength="10">
+
+<label>Email Address</label>
+<input id="devEmail" type="email" placeholder="Your email" required>
+
+<button class="primary" type="submit">Register as Developer</button>
+</form>
+
+<p class="status">Demo registration only. Real account creation will use Firebase.</p>
+</div>
+</div>
+
+<!-- DEVELOPER DASHBOARD -->
+<div class="modal hidden" id="dashboardModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('dashboardModal')">✕</button>
+
+<div class="dashboard">
+<h2>Developer Dashboard</h2>
+<p>Welcome, <strong id="welcomeName"></strong>!</p>
+
+<div class="notice">
+Your developer dashboard is currently a demo. Uploaded files are not yet stored online.
+</div>
+
+<h3>Upload Your App</h3>
+
+<form onsubmit="demoUpload(event)">
+
+<label>App / Game Name</label>
+<input id="uploadName" placeholder="Enter app name" required>
+
+<label>Category</label>
+<select id="uploadCategory" required>
+<option value="">Select category</option>
+<option>Android Apps</option>
+<option>Games</option>
+<option>Web Apps</option>
+<option>AI Apps</option>
+<option>Education</option>
+</select>
+
+<label>Description</label>
+<textarea id="uploadDescription" placeholder="Describe your app" required></textarea>
+
+<label>App Icon</label>
+<input type="file" id="uploadIcon" accept="image/*" required>
+
+<label>App File</label>
+<input type="file" id="uploadFile" accept=".apk,.zip,.aab" required>
+
+<button class="primary" type="submit">Submit App</button>
+</form>
+
+<p id="uploadMessage" class="status"></p>
+</div>
+</div>
+</div>
 
 <footer>
 <p>© 2026 FAMN Store. All rights reserved.</p>
@@ -89,13 +213,67 @@ footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:
 </footer>
 
 <script>
-function searchApps(){
- const q=document.getElementById('search').value.toLowerCase();
- document.querySelectorAll('.app').forEach(app=>{
- app.style.display=app.innerText.toLowerCase().includes(q)?'block':'none';
- });
+
+let currentDeveloper = "";
+
+function openModal(id){
+document.getElementById(id).classList.remove("hidden");
 }
+
+function closeModal(id){
+document.getElementById(id).classList.add("hidden");
+}
+
+function searchApps(){
+let q=document.getElementById("search").value.toLowerCase();
+
+document.querySelectorAll(".app").forEach(app=>{
+app.style.display=app.innerText.toLowerCase().includes(q)?"block":"none";
+});
+}
+
+function filterApps(category){
+document.getElementById("search").value="";
+document.querySelectorAll(".app").forEach(app=>{
+app.style.display=(!category || app.dataset.category===category)?"block":"none";
+});
+}
+
+function viewApp(name){
+alert(name+" details will be available soon!");
+}
+
+function demoLogin(event){
+event.preventDefault();
+alert("OTP login will be connected with Firebase in the next step.");
+}
+
+function demoRegister(event){
+event.preventDefault();
+
+currentDeveloper=document.getElementById("devName").value;
+
+closeModal("developerModal");
+
+document.getElementById("welcomeName").innerText=currentDeveloper;
+
+openModal("dashboardModal");
+}
+
+function demoUpload(event){
+event.preventDefault();
+
+const file=document.getElementById("uploadFile").files[0];
+
+if(!file)return;
+
+document.getElementById("uploadMessage").innerText=
+"Demo submission received: "+document.getElementById("uploadName").value+
+". This file has NOT been uploaded to cloud storage. Firebase Storage and Admin Approval are still pending.";
+
+}
+
 </script>
+
 </body>
 </html>
-
