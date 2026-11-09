@@ -11,9 +11,9 @@
 body{font-family:Arial,sans-serif;background:#f5f6fa;color:#172033}
 header{background:#111827;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
 .logo{font-size:26px;font-weight:bold;color:#a78bfa}
-nav{display:flex;gap:15px;align-items:center;flex-wrap:wrap}
+nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 nav a{color:white;text-decoration:none}
-button{cursor:pointer;border:0;border-radius:8px;padding:11px 17px;font-weight:bold}
+button{cursor:pointer;border:0;border-radius:8px;padding:12px 17px;font-weight:bold}
 .primary{background:#6d28d9;color:white}
 .secondary{background:white;color:#6d28d9}
 .hero{padding:55px 7%;background:linear-gradient(120deg,#312e81,#7c3aed);color:white}
@@ -24,7 +24,6 @@ main{padding:30px 7%}
 h2{margin:25px 0 18px}
 .categories{display:flex;gap:12px;flex-wrap:wrap}
 .cat{background:white;padding:15px 22px;border-radius:12px;box-shadow:0 2px 8px #ddd;cursor:pointer}
-.cat:hover{background:#ede9fe}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
 .app{background:white;padding:20px;border-radius:15px;box-shadow:0 3px 12px #ddd}
 .app-icon{width:65px;height:65px;border-radius:16px;background:#ede9fe;display:grid;place-items:center;font-size:30px;margin-bottom:15px}
@@ -35,22 +34,18 @@ footer{text-align:center;padding:25px;background:#111827;color:white;margin-top:
 .hidden{display:none!important}
 .modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10}
 .modal-box{background:white;padding:25px;border-radius:15px;width:100%;max-width:430px;max-height:90vh;overflow:auto}
-.modal-box h2{margin:0 0 20px}
-.modal-box input,.modal-box select,.modal-box textarea{
-width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-size:15px
-}
+.modal-box h2{margin:0 0 15px}
+.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-size:15px}
 .modal-box label{font-weight:bold;font-size:14px}
 .close{float:right;background:#eee;color:#333}
-.form-buttons{display:flex;gap:10px;flex-wrap:wrap}
-.dashboard{background:white;padding:25px;border-radius:15px;box-shadow:0 3px 12px #ddd}
-.dashboard h2{margin-top:0}
+.choice{width:100%;margin:10px 0}
 .notice{background:#fff7df;padding:13px;border-radius:8px;color:#805b00;margin:15px 0;font-size:14px;line-height:1.5}
-.status{color:#667085;font-size:13px;margin-top:8px}
+.status{font-size:13px;color:#667085;margin-top:12px;line-height:1.5}
+.dashboard{background:white;padding:15px;border-radius:12px}
 @media(max-width:600px){
 .hero h1{font-size:29px}
 header{padding:18px 5%}
 main{padding:20px 5%}
-nav{gap:10px}
 }
 </style>
 </head>
@@ -63,8 +58,8 @@ nav{gap:10px}
 <a href="#">Home</a>
 <a href="#categories">Categories</a>
 <a href="#apps">Apps</a>
-<button class="secondary" onclick="openModal('loginModal')">Login</button>
-<button class="primary" onclick="openModal('developerModal')">Become a Developer</button>
+<button class="secondary" onclick="openModal('userChoice')">Login</button>
+<button class="primary" onclick="openModal('devChoice')">Become a Developer</button>
 </nav>
 </header>
 
@@ -74,7 +69,7 @@ nav{gap:10px}
 <input class="search" id="search" placeholder="Search apps..." oninput="searchApps()">
 </section>
 
-<main id="homePage">
+<main>
 
 <h2 id="categories">Explore Categories</h2>
 <div class="categories">
@@ -87,8 +82,7 @@ nav{gap:10px}
 </div>
 
 <h2 id="apps">Popular Apps</h2>
-
-<div class="apps" id="appList">
+<div class="apps">
 
 <div class="app" data-category="AI Apps">
 <div class="app-icon">🤖</div>
@@ -121,68 +115,130 @@ nav{gap:10px}
 </div>
 </main>
 
-<!-- LOGIN -->
-<div class="modal hidden" id="loginModal">
+<!-- USER CHOICE -->
+<div class="modal hidden" id="userChoice">
 <div class="modal-box">
-<button class="close" onclick="closeModal('loginModal')">✕</button>
-<h2>Login to FAMN Store</h2>
+<button class="close" onclick="closeModal('userChoice')">✕</button>
+<h2>Welcome to FAMN Store</h2>
+<button class="primary choice" onclick="switchModal('userChoice','userLogin')">Login</button>
+<button class="secondary choice" onclick="switchModal('userChoice','userRegister')">Create Account</button>
+</div>
+</div>
 
-<form onsubmit="demoLogin(event)">
-<label>Mobile Number</label>
-<input type="tel" id="loginPhone" placeholder="Enter mobile number" required pattern="[0-9]{10}" maxlength="10">
-
-<button class="primary" type="submit">Continue</button>
+<!-- USER LOGIN -->
+<div class="modal hidden" id="userLogin">
+<div class="modal-box">
+<button class="close" onclick="closeModal('userLogin')">✕</button>
+<h2>User Login</h2>
+<form onsubmit="showPending(event)">
+<label>Email or Mobile Number</label>
+<input required placeholder="Enter email or mobile number">
+<label>6 Digit PIN</label>
+<input required type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6 digit PIN">
+<button class="primary choice">Login</button>
 </form>
-<p class="status">Firebase OTP authentication will be connected in the next step.</p>
+<p class="status">Login service will be activated after secure Firebase setup.</p>
 </div>
 </div>
 
-<!-- DEVELOPER REGISTRATION -->
-<div class="modal hidden" id="developerModal">
+<!-- USER REGISTER -->
+<div class="modal hidden" id="userRegister">
 <div class="modal-box">
-<button class="close" onclick="closeModal('developerModal')">✕</button>
+<button class="close" onclick="closeModal('userRegister')">✕</button>
+<h2>Create User Account</h2>
+<form onsubmit="showPending(event)">
+<label>Full Name</label>
+<input required placeholder="Your full name">
+<label>Email</label>
+<input type="email" required placeholder="Your email">
+<label>Mobile Number</label>
+<input type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="10 digit mobile number">
+<label>Create 6 Digit PIN</label>
+<input type="password" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Create PIN">
+<label>Confirm PIN</label>
+<input type="password" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Confirm PIN">
+<button class="primary choice">Create Account</button>
+</form>
+</div>
+</div>
+
+<!-- DEVELOPER CHOICE -->
+<div class="modal hidden" id="devChoice">
+<div class="modal-box">
+<button class="close" onclick="closeModal('devChoice')">✕</button>
+<h2>Become a Developer</h2>
+<button class="primary choice" onclick="switchModal('devChoice','devLogin')">Developer Login</button>
+<button class="secondary choice" onclick="switchModal('devChoice','devRegister')">Developer Register</button>
+</div>
+</div>
+
+<!-- DEVELOPER LOGIN -->
+<div class="modal hidden" id="devLogin">
+<div class="modal-box">
+<button class="close" onclick="closeModal('devLogin')">✕</button>
+<h2>Developer Login</h2>
+
+<form onsubmit="showPending(event)">
+<label>Email or Mobile Number</label>
+<input id="devLoginIdentity" required placeholder="Enter email or mobile number">
+
+<label>6 Digit PIN</label>
+<input id="devLoginPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Enter 6 digit PIN">
+
+<button class="primary choice">Login to Dashboard</button>
+</form>
+
+<p class="status">Use your registered email OR mobile number with your 6 digit PIN.</p>
+</div>
+</div>
+
+<!-- DEVELOPER REGISTER -->
+<div class="modal hidden" id="devRegister">
+<div class="modal-box">
+<button class="close" onclick="closeModal('devRegister')">✕</button>
 <h2>Developer Registration</h2>
 
-<form onsubmit="demoRegister(event)">
+<form onsubmit="showPending(event)">
 <label>Developer Name</label>
-<input id="devName" placeholder="Your name" required>
-
-<label>Mobile Number</label>
-<input id="devPhone" type="tel" placeholder="10 digit mobile number" required pattern="[0-9]{10}" maxlength="10">
+<input id="devName" required placeholder="Enter your name">
 
 <label>Email Address</label>
-<input id="devEmail" type="email" placeholder="Your email" required>
+<input id="devEmail" type="email" required placeholder="Enter your email">
 
-<button class="primary" type="submit">Register as Developer</button>
+<label>Mobile Number</label>
+<input id="devPhone" type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter 10 digit mobile number">
+
+<label>Create 6 Digit PIN</label>
+<input id="devPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Create your PIN">
+
+<label>Confirm 6 Digit PIN</label>
+<input id="devConfirmPin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="Confirm your PIN">
+
+<button class="primary choice">Register as Developer</button>
 </form>
 
-<p class="status">Demo registration only. Real account creation will use Firebase.</p>
+<p class="status">Your email and mobile number will be connected to the same developer account.</p>
 </div>
 </div>
 
-<!-- DEVELOPER DASHBOARD -->
-<div class="modal hidden" id="dashboardModal">
+<!-- DASHBOARD -->
+<div class="modal hidden" id="dashboard">
 <div class="modal-box">
-<button class="close" onclick="closeModal('dashboardModal')">✕</button>
-
+<button class="close" onclick="closeModal('dashboard')">✕</button>
 <div class="dashboard">
 <h2>Developer Dashboard</h2>
-<p>Welcome, <strong id="welcomeName"></strong>!</p>
-
+<p>Welcome to FAMN Store Developer Area.</p>
 <div class="notice">
-Your developer dashboard is currently a demo. Uploaded files are not yet stored online.
+Your dashboard will show your uploaded apps, approval status and developer account details after Firebase setup.
 </div>
-
 <h3>Upload Your App</h3>
-
-<form onsubmit="demoUpload(event)">
-
+<form onsubmit="showPending(event)">
 <label>App / Game Name</label>
-<input id="uploadName" placeholder="Enter app name" required>
+<input required placeholder="Enter app name">
 
 <label>Category</label>
-<select id="uploadCategory" required>
-<option value="">Select category</option>
+<select required>
+<option value="">Select Category</option>
 <option>Android Apps</option>
 <option>Games</option>
 <option>Web Apps</option>
@@ -191,18 +247,16 @@ Your developer dashboard is currently a demo. Uploaded files are not yet stored 
 </select>
 
 <label>Description</label>
-<textarea id="uploadDescription" placeholder="Describe your app" required></textarea>
+<textarea required placeholder="Describe your app"></textarea>
 
 <label>App Icon</label>
-<input type="file" id="uploadIcon" accept="image/*" required>
+<input type="file" accept="image/*" required>
 
 <label>App File</label>
-<input type="file" id="uploadFile" accept=".apk,.zip,.aab" required>
+<input type="file" accept=".apk,.zip,.aab" required>
 
-<button class="primary" type="submit">Submit App</button>
+<button class="primary choice">Submit App</button>
 </form>
-
-<p id="uploadMessage" class="status"></p>
 </div>
 </div>
 </div>
@@ -213,9 +267,6 @@ Your developer dashboard is currently a demo. Uploaded files are not yet stored 
 </footer>
 
 <script>
-
-let currentDeveloper = "";
-
 function openModal(id){
 document.getElementById(id).classList.remove("hidden");
 }
@@ -224,8 +275,31 @@ function closeModal(id){
 document.getElementById(id).classList.add("hidden");
 }
 
+function switchModal(oldId,newId){
+closeModal(oldId);
+openModal(newId);
+}
+
+function showPending(event){
+event.preventDefault();
+
+const form=event.target;
+
+if(form.id==="devRegister" || form.querySelector("#devPin")){
+const pin=document.getElementById("devPin");
+const confirm=document.getElementById("devConfirmPin");
+
+if(pin && pin.value!==confirm.value){
+alert("PIN and Confirm PIN do not match.");
+return;
+}
+}
+
+alert("The form is ready. Secure Firebase account service is not connected yet. No account has been created.");
+}
+
 function searchApps(){
-let q=document.getElementById("search").value.toLowerCase();
+const q=document.getElementById("search").value.toLowerCase();
 
 document.querySelectorAll(".app").forEach(app=>{
 app.style.display=app.innerText.toLowerCase().includes(q)?"block":"none";
@@ -234,45 +308,15 @@ app.style.display=app.innerText.toLowerCase().includes(q)?"block":"none";
 
 function filterApps(category){
 document.getElementById("search").value="";
+
 document.querySelectorAll(".app").forEach(app=>{
 app.style.display=(!category || app.dataset.category===category)?"block":"none";
 });
 }
 
 function viewApp(name){
-alert(name+" details will be available soon!");
+alert(name+" details coming soon!");
 }
-
-function demoLogin(event){
-event.preventDefault();
-alert("OTP login will be connected with Firebase in the next step.");
-}
-
-function demoRegister(event){
-event.preventDefault();
-
-currentDeveloper=document.getElementById("devName").value;
-
-closeModal("developerModal");
-
-document.getElementById("welcomeName").innerText=currentDeveloper;
-
-openModal("dashboardModal");
-}
-
-function demoUpload(event){
-event.preventDefault();
-
-const file=document.getElementById("uploadFile").files[0];
-
-if(!file)return;
-
-document.getElementById("uploadMessage").innerText=
-"Demo submission received: "+document.getElementById("uploadName").value+
-". This file has NOT been uploaded to cloud storage. Firebase Storage and Admin Approval are still pending.";
-
-}
-
 </script>
 
 </body>
